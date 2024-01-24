@@ -1,0 +1,17 @@
+<!-- your_app/templates/technician/dashboard.html -->
+{% extends '../../../main/templates/main/base.html' %}
+
+{% block content %}
+  <h1>Welcome, {{ user.username }}!</h1>
+  
+  <h2>Your Repair Assignments:</h2>
+  {% if repair_assignments %}
+    <ul>
+      {% for assignment in repair_assignments %}
+        <li>{{ assignment.description }} - {{ assignment.request_time }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No repair assignments at the moment.</p>
+  {% endif %}
+{% endblock %}

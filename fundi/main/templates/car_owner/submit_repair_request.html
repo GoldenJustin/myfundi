@@ -1,0 +1,20 @@
+<!-- your_app/templates/car_owner/submit_repair_request.html -->
+{% extends 'main/base.html' %}
+
+{% comment %} {% block content %}
+  <h1>Submit Repair Request</h1>
+  <form method="post" action="{% url 'car_owner:submit_repair_request' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Request</button>
+  </form>
+{% endblock %} {% endcomment %}
+
+{% block title %} Create a Request {% endblock %}
+{% load crispy_forms_tags%}
+{% block content %}
+<form method="post">
+{% csrf_token%}{{form|crispy}}
+<button type="submit" class="btn btn-success">Post</button>
+</form>
+{% endblock %}
