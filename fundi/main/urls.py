@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import dashboard, submit_repair_request
+from owner.views import dashboard, submit_repair_request
 
 
 
