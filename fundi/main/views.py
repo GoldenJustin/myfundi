@@ -15,7 +15,7 @@ def home(request):
         if post and post.author == request.user:
             post.delete()
             
-    return render(request, 'main/user.html', {'posts': posts})
+    return render(request, 'main/base.html', {'posts': posts})
 
 
 # def user_login(request):
