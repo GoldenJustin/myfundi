@@ -17,6 +17,10 @@ def home(request):
             
     return render(request, 'main/base.html', {'posts': posts})
 
+@login_required(login_url="/sign-in")
+def profile(request):            
+    return render(request, 'main/users-profile.html',)
+
 
 # def user_login(request):
 #     if request.method == 'POST':

@@ -7,7 +7,7 @@ from owner.views import dashboard, submit_repair_request
 urlpatterns = [
     path('', views.home, name='home'),
     path('home', views.home, name='home'),
-    # path('login', views.user_login, name='home'),
+    path('profile', views.profile, name='profile'),
     path('sign-in', views.custom_login, name='sign-in'),
     path('register', views.sign_up, name='sign_up'),
     path('logout', views.logout_user, name='logout'),
