@@ -7,10 +7,7 @@ from main.models import *
 
 @login_required
 def dashboard(request):
-    # Retrieve repair requests for the logged-in car owner
-    car_owner = get_object_or_404(CarOwner, user=request.user)
-    repair_requests = RepairRequest.objects.filter(car__owner=request.user.carowner)
-    return render(request, 'main/dashboard.html', {'repair_requests': repair_requests})
+    return render(request, 'car_owner/dashboard.html')
 
 @login_required
 def submit_repair_request(request):
