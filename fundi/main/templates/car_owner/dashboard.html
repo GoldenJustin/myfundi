@@ -1,19 +1,9 @@
 <!-- your_app/templates/car_owner/dashboard.html -->
-{% extends 'main/index.html' %}
+{% extends 'main/base.html' %}
 
 {% block content %}
-  <h1>Welcome, {{ user.username }}!</h1>
-  
-  <h2>Your Repair Requests:</h2>
-  {% if repair_requests %}
-    <ul>
-      {% for repair_request in repair_requests %}
-        <li>{{ repair_request.description }} - {{ repair_request.request_time }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No repair requests yet.</p>
-  {% endif %}
+<h1>This is Main</h1>
+
 {% endblock %}
 
 
