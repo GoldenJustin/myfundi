@@ -6,7 +6,7 @@
 
 
 
-
+<!-- template.html -->
 <div class="container mt-5 pt-5"><!-- Margin top for spacing -->
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -15,35 +15,45 @@
           <h5 class="card-title">Car Repair Request Form</h5>
 
           <!-- Car Repair Request Form -->
-          <form class="row g-3">
+          <form method="post" action="{% url 'submit_repair_request' %}" class="row g-3">
+            {% csrf_token %}
+            <!-- Include the car selection field based on how you want to present it in the form -->
+            <!-- For example, you can use a dropdown or display a list of cars -->
+            <!-- Replace the following line with your car selection field -->
+            <select name="car" id="car" class="form-select" aria-label="Car" required>
+              {% for car in cars %}
+                <option value="{{ car.id }}">{{ car.car_model }} - {{ car.license_plate }}</option>
+              {% endfor %}
+            </select>
+
             <div class="col-md-12">
               <div class="form-floating">
-                <input type="text" class="form-control" id="carModel" placeholder="Car Model">
+                <input type="text" class="form-control" name="car_model" id="carModel" placeholder="Car Model" required>
                 <label for="carModel">Car Model</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="licensePlate" placeholder="License Plate">
+                <input type="text" class="form-control" name="license_plate" id="licensePlate" placeholder="License Plate" required>
                 <label for="licensePlate">License Plate</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="issueDescription" placeholder="Issue Description">
+                <input type="text" class="form-control" name="issue_description" id="issueDescription" placeholder="Issue Description" required>
                 <label for="issueDescription">Issue Description</label>
               </div>
             </div>
             <div class="col-12">
               <div class="form-floating">
-                <textarea class="form-control" placeholder="Additional Comments" id="additionalComments" style="height: 100px;"></textarea>
+                <textarea class="form-control" name="additional_comments" placeholder="Additional Comments" id="additionalComments" style="height: 100px"></textarea>
                 <label for="additionalComments">Additional Comments</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="col-md-12">
                 <div class="form-floating">
-                  <select class="form-select" id="repairType" aria-label="Repair Type">
+                  <select class="form-select" name="repair_type" id="repairType" aria-label="Repair Type" required>
                     <option selected>Regular Maintenance</option>
                     <option value="1">Engine Repair</option>
                     <option value="2">Brake System</option>
@@ -55,7 +65,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="date" class="form-control" id="preferredDate" placeholder="Preferred Date">
+                <input type="date" class="form-control" name="preferred_date" id="preferredDate" placeholder="Preferred Date" required>
                 <label for="preferredDate">Preferred Date</label>
               </div>
             </div>
@@ -71,10 +81,5 @@
   </div>
 </div>
 
-
-
-
-  </div>
-</div>
 
 {% endblock %}

@@ -32,15 +32,19 @@ class RegisterForm(UserCreationForm):
 class RepairRequestForm(forms.ModelForm):
     class Meta:
         model = RepairRequest
-        fields = ['description', 'owner_latitude', 'owner_longitude']
-
-    def __init__(self, *args, **kwargs):
-        super(RepairRequestForm, self).__init__(*args, **kwargs)
-        self.fields['owner_latitude'].widget.attrs['readonly'] = True
-        self.fields['owner_longitude'].widget.attrs['readonly'] = True
+        fields = [
+            'car_model',
+            'license_plate',
+            'issue_description',
+            'additional_comments',
+            'repair_type',
+            'preferred_date',
+        ]
 
 
 class CustomLoginForm(forms.Form):
     username = forms.CharField(max_length=150, label='Username')
     password = forms.CharField(widget=forms.PasswordInput, label='Password')
+
+
 

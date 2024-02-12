@@ -1,21 +1,9 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from .forms import CustomLoginForm, RegisterForm, RepairRequestForm
+from django.shortcuts import render, redirect
+from .forms import CustomLoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from .models import *
-from django.contrib.auth.forms import AuthenticationForm
 
-@login_required(login_url="/sign-in")
-def home(request):
-    posts = Post.objects.all()
-
-    if request.method=="POST":
-        post_id = request.POST.get("post-id")
-        post = Post.objects.filter(id=post_id).first()
-        if post and post.author == request.user:
-            post.delete()
-            
-    return render(request, 'main/base.html', {'posts': posts})
 
 @login_required(login_url="/sign-in")
 def profile(request):            
@@ -44,18 +32,39 @@ def custom_login(request):
 
     return render(request, 'main/pages-login.html', {'form': form})
 
+
 def sign_up(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('/home')
 
+            # Check user type and create corresponding profile
+            user_type = form.cleaned_data['user_type']
+            if user_type == 'car_owner':
+                car_owner, created = CarOwner.objects.get_or_create(user=user, defaults={'phone_number': form.cleaned_data['phone_number'], 'address': form.cleaned_data['address']})
+                if not created:
+                    # Update existing CarOwner instance if it already exists
+                    car_owner.phone_number = form.cleaned_data['phone_number']
+                    car_owner.address = form.cleaned_data['address']
+                    car_owner.save()
+            elif user_type == 'technician':
+                technician, created = Technician.objects.get_or_create(user=user, defaults={'phone_number': form.cleaned_data['phone_number'], 'address': form.cleaned_data['address']})
+                if not created:
+                    # Update existing Technician instance if it already exists
+                    technician.phone_number = form.cleaned_data['phone_number']
+                    technician.address = form.cleaned_data['address']
+                    technician.save()
+
+            # Create UserProfile
+            UserProfile.objects.create(user=user, user_type=user_type)
+
+            # Redirect to a success page or login page
+            return redirect('sign-in')
     else:
         form = RegisterForm()
 
-    return render(request, 'main/pages-register.html', {"form" :form})
+    return render(request, 'main/pages-register.html', {'form': form})
 
 def logout_user(request):
     logout(request)
