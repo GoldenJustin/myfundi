@@ -4,10 +4,9 @@ from main.models import RepairRequest, Technician
 from .forms import TechnicianAvailabilityForm
 
 @login_required
-def dashboard(request):
+def technician_dashboard(request):
     # Retrieve repair assignments for the logged-in technician
-    repair_assignments = RepairRequest.objects.filter(assigned_technician=request.user.technician, is_completed=False)
-    return render(request, 'technician/dashboard.html', {'repair_assignments': repair_assignments})
+    return render(request, 'technician/dashboard.html')
 
 @login_required
 def update_availability(request):

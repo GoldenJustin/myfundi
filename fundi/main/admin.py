@@ -12,6 +12,7 @@ admin.site.register (Car)
 admin.site.register (RepairRequest)
 admin.site.register (TechnicianAvailability)
 admin.site.register (RepairAssignment)
+admin.site.register (UserProfile)
 
 
 

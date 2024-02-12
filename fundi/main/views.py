@@ -21,36 +21,6 @@ def home(request):
 def profile(request):            
     return render(request, 'main/users-profile.html',)
 
-
-# def user_login(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-
-#             if user is not None:
-#                 login(request, user)
-
-#                 # Check user type and redirect to the respective dashboard
-#                 if hasattr(user, 'carowner'):
-#                     return redirect('car_owner_dashboard')
-#                 elif Technician.objects.filter(user=user).exists():
-#                     return redirect('technician_dashboard')
-#                 # Add more user types as needed
-#                 else:
-#                     # Handle unknown user type
-#                     return redirect('home')  # Redirect to a default home page or any other appropriate page
-#             else:
-#                 # Invalid login credentials
-#                 return render(request, 'pages-login.html', {'form': form, 'error_message': 'Invalid username or password'})
-#     else:
-#         form = AuthenticationForm()
-
-#     return render(request, 'pages-login.html', {'form': form})
-
-
 def custom_login(request):
     if request.method == 'POST':
         form = CustomLoginForm(request.POST)
@@ -60,8 +30,15 @@ def custom_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                # Redirect to a success page or home
-                return redirect('home')
+
+                # Redirect users based on their roles
+                user_profile = UserProfile.objects.get(user=user)
+                if user.is_superuser:
+                    return redirect('admin_dashboard')
+                elif user_profile.user_type == 'owner':
+                    return redirect('owner_dashboard')
+                elif user_profile.user_type == 'technician':
+                    return redirect('technician_dashboard')
     else:
         form = CustomLoginForm()
 
@@ -80,8 +57,14 @@ def sign_up(request):
 
     return render(request, 'main/pages-register.html', {"form" :form})
 
-
 def logout_user(request):
     logout(request)
     return redirect('sign-in')
+
+def admin_dashboard(request):
+    # Add logic specific to the admin dashboard
+    return render(request, 'admin/dashboard.html')
+
+def main(request):
+    return render(request, 'main/main.html')
 

@@ -23,6 +23,18 @@ class Technician(models.Model):
     address = models.TextField()
     availability = models.CharField(max_length=255, blank=True, null=True)  # You can adjust this field based on your requirements
 
+class UserProfile(models.Model):
+    USER_TYPE_CHOICES = [
+        ('owner', 'Car Owner'),
+        ('technician', 'Technician'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.user_type}"
+    
 # Model for Cars
 class Car(models.Model):
     owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE)
