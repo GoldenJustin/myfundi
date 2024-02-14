@@ -36,6 +36,11 @@ def submit_repair_request(request):
         form = RepairRequestForm()
     return render(request, 'car_owner/submit_repair_request.html', {'form': form})
 
+@login_required
+def add_car(request):
+    return render(request, 'car_owner/add_car.html')
+
+
 
 
 

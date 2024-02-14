@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User    
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _  
 
 class CarOwner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -25,11 +27,64 @@ class UserProfile(models.Model):
         return f"{self.user.username} - {self.user_type}"
     
 # Model for Cars
+
+def validate_license_plate_number(value):
+    # Check if the license plate number follows the specified format
+    if not (
+        value.startswith('T') and
+        len(value) == 7 and
+        value[1:4].isdigit() and
+        value[4].isalpha() and
+        'A' <= value[4] <= 'E' and
+        value[5:].isalpha()
+    ):
+        raise ValidationError(
+            _('%(value)s is not a valid license plate number. It should start with T followed by three digits, and three letters with the first letter in the range A to E.'),
+            params={'value': value},
+        )
+
 class Car(models.Model):
-    owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE)
+    FUEL_TYPE_CHOICES = [
+        ('petrol', 'Petrol'),
+        ('diesel', 'Diesel'),
+    ]
+    TRANSMISSION_TYPE_CHOICES=[
+        ('manual', 'Manual Transmission'),
+        ('automatic', 'Automatic Transmission'),
+    ]
+    owner = models.ForeignKey('CarOwner', on_delete=models.CASCADE)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.PositiveIntegerField()
+    color = models.CharField(max_length=50, null=True, blank=True)
+    license_plate_number = models.CharField(
+        max_length=7,
+        unique=True,
+        validators=[validate_license_plate_number],
+        help_text="Enter a license plate number starting with 'T' followed by three digits, and three letters.",
+    )
+    mileage = models.PositiveIntegerField(default=0)
+    fuel_type = models.CharField(max_length=20, choices=FUEL_TYPE_CHOICES)
+    transmission_type = models.CharField(max_length=20, choices=TRANSMISSION_TYPE_CHOICES)
+    next_service_due = models.DateField(null=True, blank=True)
+    last_service_date = models.DateField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.make} {self.model} {self.year} - {self.license_plate_number}"
+
+    def save(self, *args, **kwargs):
+        # Add 'T' to the beginning if not already present
+        if not self.license_plate_number.startswith('T'):
+            self.license_plate_number = f'T{self.license_plate_number}'
+        # Convert letters to uppercase
+        self.license_plate_number = self.license_plate_number.upper()
+        super().save(*args, **kwargs)
+
+
+
+
+
+
 
 class RepairRequest(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

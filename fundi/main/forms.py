@@ -46,5 +46,10 @@ class CustomLoginForm(forms.Form):
     username = forms.CharField(max_length=150, label='Username')
     password = forms.CharField(widget=forms.PasswordInput, label='Password')
 
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        fields = ['make', 'model', 'year', 'color', 'license_plate_number', 'mileage', 'fuel_type', 'transmission_type', 'next_service_due', 'last_service_date']
+
 
 

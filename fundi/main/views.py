@@ -3,6 +3,8 @@ from .forms import CustomLoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from .models import *
+from django.contrib import messages
+from .forms import CarForm
 
 
 @login_required(login_url="/sign-in")
@@ -70,10 +72,26 @@ def logout_user(request):
     logout(request)
     return redirect('sign-in')
 
+
 def admin_dashboard(request):
     # Add logic specific to the admin dashboard
     return render(request, 'admin/dashboard.html')
 
+@login_required(login_url="/sign-in")
 def main(request):
     return render(request, 'main/main.html')
+
+@login_required
+def add_car(request):
+    if request.method == 'POST':
+        form = CarForm(request.POST)
+        if form.is_valid():
+            car = form.save(commit=False)
+            car.owner = request.user.carowner  # Assuming you have a one-to-one relationship between User and CarOwner
+            car.save()
+            return redirect('dashboard')  # Replace 'dashboard' with the actual URL name for the owner's dashboard
+    else:
+        form = CarForm()
+
+    return render(request, 'car_owner/add_car.html', {'form': form})
 

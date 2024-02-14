@@ -1,0 +1,122 @@
+<!-- your_app/templates/car_owner/submit_repair_request.html -->
+{% extends 'car_owner/dashboard.html' %}
+{% block title %} Create a Request {% endblock %}
+{% load crispy_forms_tags%}
+{% block content %}
+
+
+<div class="container mt-5 pt-5">
+  <section class="section">
+      <div class="row justify-content-center">
+          <div class="col-md-8">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Add Car</h5>
+                      
+                      <!-- Car Form -->
+                      <form method="post" enctype="multipart/form-data" action="{% url 'add-car' %}">
+
+                          {% csrf_token %}
+
+                          <!-- Make -->
+                          <div class="row mb-3">
+                              <label for="inputMake" class="col-sm-2 col-form-label">Make</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="inputMake" name="make" required>
+                              </div>
+                          </div>
+
+                          <!-- Model -->
+                          <div class="row mb-3">
+                              <label for="inputModel" class="col-sm-2 col-form-label">Model</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="inputModel" name="model" required>
+                              </div>
+                          </div>
+
+                          <!-- Year -->
+                          <div class="row mb-3">
+                              <label for="inputYear" class="col-sm-2 col-form-label">Year</label>
+                              <div class="col-sm-10">
+                                  <input type="number" class="form-control" id="inputYear" name="year" required>
+                              </div>
+                          </div>
+
+                          <!-- Color -->
+                          <div class="row mb-3">
+                              <label for="inputColor" class="col-sm-2 col-form-label">Color</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="inputColor" name="color">
+                              </div>
+                          </div>
+
+                          <!-- License Plate Number -->
+                          <div class="row mb-3">
+                              <label for="inputLicensePlate" class="col-sm-2 col-form-label">License Plate</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="inputLicensePlate" name="license_plate_number" required>
+                              </div>
+                          </div>
+
+                          <!-- Mileage -->
+                          <div class="row mb-3">
+                              <label for="inputMileage" class="col-sm-2 col-form-label">Mileage</label>
+                              <div class="col-sm-10">
+                                  <input type="number" class="form-control" id="inputMileage" name="mileage" required>
+                              </div>
+                          </div>
+
+                          <!-- Fuel Type -->
+                          <div class="row mb-3">
+                              <label for="inputFuelType" class="col-sm-2 col-form-label">Fuel Type</label>
+                              <div class="col-sm-10">
+                                  <select class="form-select" id="inputFuelType" name="fuel_type" required>
+                                      <option value="petrol">Petrol</option>
+                                      <option value="diesel">Diesel</option>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <!-- Transmission Type -->
+                          <div class="row mb-3">
+                              <label for="inputTransmissionType" class="col-sm-2 col-form-label">Transmission Type</label>
+                              <div class="col-sm-10">
+                                  <select class="form-select" id="inputTransmissionType" name="transmission_type" required>
+                                      <option value="manual">Manual Transmission</option>
+                                      <option value="automatic">Automatic Transmission</option>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <!-- Next Service Due -->
+                          <div class="row mb-3">
+                              <label for="inputNextServiceDue" class="col-sm-2 col-form-label">Next Service Due</label>
+                              <div class="col-sm-10"> 
+                                  <input type="date" class="form-control" id="inputNextServiceDue" name="next_service_due">
+                              </div>
+                          </div>
+
+                          <!-- Last Service Date -->
+                          <div class="row mb-3">
+                              <label for="inputLastServiceDate" class="col-sm-2 col-form-label">Last Service Date</label>
+                              <div class="col-sm-10">
+                                  <input type="date" class="form-control" id="inputLastServiceDate" name="last_service_date">
+                              </div>
+                          </div>
+
+                          <!-- Submit Button -->
+                          <div class="row mb-3">
+                              <div class="col-sm-10 offset-sm-2">
+                                  <button type="submit" class="btn btn-primary">Add Car</button>
+                              </div>
+                          </div>
+
+                      </form><!-- End Car Form -->
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</div>
+{% endblock %}
