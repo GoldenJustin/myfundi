@@ -81,11 +81,6 @@ class Car(models.Model):
         super().save(*args, **kwargs)
 
 
-
-
-
-
-
 class RepairRequest(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     car_model = models.CharField(max_length=255)  
@@ -101,6 +96,8 @@ class RepairRequest(models.Model):
 
     def __str__(self):
         return f'Repair Request for {self.car_model} - {self.request_time}'
+    
+    
 # Model for Technician Availability
 class TechnicianAvailability(models.Model):
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE)

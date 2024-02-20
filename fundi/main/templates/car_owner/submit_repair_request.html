@@ -7,7 +7,7 @@
 
 
 <!-- template.html -->
-<div class="container mt-5 pt-5"><!-- Margin top for spacing -->
+{% comment %} <div class="container mt-5 pt-5"><!-- Margin top for spacing -->
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
@@ -79,7 +79,14 @@
       </div>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
+
+<h2>Create Repair Request</h2>
+<form method="post" action="{% url 'create_repair_request' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
 
 
 {% endblock %}

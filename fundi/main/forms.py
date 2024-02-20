@@ -29,17 +29,17 @@ class RegisterForm(UserCreationForm):
 
         return user
 
-class RepairRequestForm(forms.ModelForm):
-    class Meta:
-        model = RepairRequest
-        fields = [
-            'car_model',
-            'license_plate',
-            'issue_description',
-            'additional_comments',
-            'repair_type',
-            'preferred_date',
-        ]
+# class RepairRequestForm(forms.ModelForm):
+#     class Meta:
+#         model = RepairRequest
+#         fields = [
+#             'car_model',
+#             'license_plate',
+#             'issue_description',
+#             'additional_comments',
+#             'repair_type',
+#             'preferred_date',
+#         ]
 
 
 class CustomLoginForm(forms.Form):
@@ -51,5 +51,30 @@ class CarForm(forms.ModelForm):
         model = Car
         fields = ['make', 'model', 'year', 'color', 'license_plate_number', 'mileage', 'fuel_type', 'transmission_type', 'next_service_due', 'last_service_date']
 
+
+class RepairRequestForm(forms.ModelForm):
+    car_model = forms.CharField(max_length=255, required=False)
+    license_plate = forms.CharField(max_length=20)
+
+    class Meta:
+        model = RepairRequest
+        fields = ['car_model', 'license_plate', 'issue_description', 'additional_comments', 'repair_type', 'preferred_date']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set initial values based on license_plate
+        license_plate = self.initial.get('license_plate', None)
+        if license_plate:
+            try:
+                car = Car.objects.get(license_plate_number=license_plate)
+                self.initial['car_model'] = car.model
+                self.initial['year'] = car.year
+                self.initial['color'] = car.color
+                self.initial['fuel_type'] = car.fuel_type
+                self.initial['transmission_type'] = car.transmission_type
+                # Add more initial values here based on the car object
+            except Car.DoesNotExist:
+                pass
 
 

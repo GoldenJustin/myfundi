@@ -22,6 +22,7 @@ urlpatterns = [
     # path('car-owner/', include('main.urls', namespace='car_owner')),
     path('', include('main.urls')),
     path('', include('technician.urls')),
+    path('', include('owner.urls')),
     path('', include('django.contrib.auth.urls'))
 
 ]

@@ -81,17 +81,5 @@ def admin_dashboard(request):
 def main(request):
     return render(request, 'main/main.html')
 
-@login_required
-def add_car(request):
-    if request.method == 'POST':
-        form = CarForm(request.POST)
-        if form.is_valid():
-            car = form.save(commit=False)
-            car.owner = request.user.carowner  # Assuming you have a one-to-one relationship between User and CarOwner
-            car.save()
-            return redirect('dashboard')  # Replace 'dashboard' with the actual URL name for the owner's dashboard
-    else:
-        form = CarForm()
 
-    return render(request, 'car_owner/add_car.html', {'form': form})
 
